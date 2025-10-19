@@ -9,6 +9,7 @@ dependencies = [
     "langchain-community",
     "langchain[openai]",
     "langgraph",
+    "pytest>=8.4.2",
 ]
 
 # ---------------------------
@@ -20,26 +21,24 @@ dev = [
     "pytest",
     "pytest-cov",
     "pytest-mock",
+    "pytest-testmon",
+    "pytest-smoke",
     "coverage",
-
     # --- Code Quality ---
     "ruff",
-    "black",
-    "isort",
     "mypy",
     "pydocstyle",
-
     # --- Dev Utilities ---
     "pre-commit",
     "ipython",
     "rich",
     "python-dotenv",
     "debugpy",
-
     # --- Documentation ---
     "mkdocs",
     "mkdocs-material",
 ]
+
 
 # ---------------------------
 # Build system
