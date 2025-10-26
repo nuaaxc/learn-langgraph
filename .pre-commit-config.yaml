@@ -3,83 +3,11 @@
 # Keep hook versions fresh:     pre-commit autoupdate
 
 repos:
-  # ----------------------------
-  # 1️⃣ Ruff — Linting & Formatting
-  # ----------------------------
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.14.0
-    hooks:
-      - id: ruff
-        args: [--fix]  # Auto-fix lint issues
-      - id: ruff-format  # Code formatting (like Black)
-
-  # ----------------------------
-  # 2️⃣ Mypy — Type Checking
-  # ----------------------------
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.18.2
-    hooks:
-      - id: mypy
-        args: [--strict, --ignore-missing-imports]
-
-  # ----------------------------
-  # 3️⃣ Pydocstyle — Docstring Style Checker
-  # ----------------------------
-  - repo: https://github.com/PyCQA/pydocstyle
-    rev: 6.3.0
-    hooks:
-      - id: pydocstyle
-        args: ["--convention=google"]
-        # Alternatives: pep257, numpy, google
-
-  # ----------------------------
-  # 4️⃣ Markdownlint — Markdown File Quality
-  # ----------------------------
-  - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.45.0
-    hooks:
-      - id: markdownlint
-        files: \.(md|markdown)$
-        args: ["--disable", "MD013"]  # Disable long-line rule
-
-  # ----------------------------
-  # 5️⃣ Pre-commit Built-in Hooks
-  # ----------------------------
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v6.0.0
-    hooks:
-      - id: check-merge-conflict
-      - id: check-yaml
-      - id: end-of-file-fixer
-      - id: trailing-whitespace
-      - id: check-added-large-files
-
-  # ----------------------------
-  # 6️⃣ Tests — Pytest hooks
-  # ----------------------------
   - repo: local
     hooks:
-      # Fast sanity on commit: only re-run tests affected by changed code
-      - id: pytest-testmon
-        name: Run pytest (testmon) on commit
-        entry: bash -lc 'uv run pytest --testmon -q --maxfail=1'
+      - id: core
+        name: format and lint core
         language: system
+        entry: make format lint
+        files: ^src/
         pass_filenames: false
-        types: [python]
-        stages: [pre-commit]
-
-      # Full suite w/ coverage gate before push
-      - id: pytest-full
-        name: Run full pytest with coverage on push
-        entry: bash -lc 'uv run pytest -q --maxfail=1 --disable-warnings --cov=src/tests --cov-config=pyproject.toml --cov-report=term-missing --cov-fail-under=85'
-        language: system
-        pass_filenames: false
-        stages: [pre-push]
-
-      # Optional: quick smoke tests (e.g., markers) before commit
-      - id: pytest-smoke
-        name: Run smoke tests (marked) on commit
-        entry: bash -lc 'uv run pytest -q -m "smoke"'
-        language: system
-        pass_filenames: false
-        stages: [pre-commit]

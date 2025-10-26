@@ -8,7 +8,7 @@ def test_hello_world() -> None:
     assert True
 
 
-@pytest.mark.smoke  # type: ignore[misc]
+@pytest.mark.smoke
 def test_hello_world_smoke() -> None:
     """A basic smoke test."""
     assert True

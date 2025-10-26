@@ -1,15 +1,83 @@
 # Python-generated files
 __pycache__/
 *.py[oc]
+*.pyo
+*.pyd
+.Python
 build/
 dist/
 wheels/
 *.egg-info
+*.egg
+MANIFEST
 
 # Virtual environments
 .venv
+venv/
+ENV/
+env/
+.virtualenv
 
-# pytest-testmon cache
+# Testing and coverage
+.pytest_cache/
 .testmondata
 .testmondata.journal
 .coverage
+.coverage.*
+coverage.xml
+htmlcov/
+.tox/
+.nox/
+*.cover
+.hypothesis/
+
+# IDEs and editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Type checking
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pytype/
+pyrightconfig.json
+
+# Environment and secrets
+.env
+.env.*
+*.key
+*.pem
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+*.ipynb_checkpoints
+**/.ipynb_checkpoints/
+
+# Documentation
+site/
+docs/_build/
+.mkdocs_cache/
+
+# LangSmith and LangChain
+.langchain/
+langsmith_traces/
+
+# Ruff
+.ruff_cache/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Logs and databases
+*.log
+*.sqlite
+*.db
+
+# Pre-commit
+.pre-commit-config.yaml.bak

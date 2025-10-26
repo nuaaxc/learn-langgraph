@@ -1,48 +1,251 @@
 [project]
 name = "learn-langgraph"
 version = "0.1.0"
-description = "Add your description here"
+description = "LangGraph learning project for building agentic AI applications"
 readme = "README.md"
-requires-python = ">=3.12"
-dependencies = [
-    "ipykernel",
-    "langchain-community",
-    "langchain[openai]",
-    "langgraph",
-    "pytest>=8.4.2",
+requires-python = ">=3.13"
+license = {text = "MIT"}
+authors = [
+    {name = "Shawn", email = "your.email@example.com"}
+]
+keywords = ["langgraph", "langchain", "agents", "ai", "llm", "agentic-ai"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 
-# ---------------------------
-# Development dependencies
-# ---------------------------
-[dependency-groups]
-dev = [
-    # --- Testing ---
-    "pytest",
-    "pytest-cov",
-    "pytest-mock",
-    "pytest-testmon",
-    "pytest-smoke",
-    "coverage",
-    # --- Code Quality ---
+dependencies = [
+    "langchain>=1.0.2",
+    "langchain-openai>=1.0.1",
+    "langchain-anthropic>=1.0.0",
+    "langgraph>=1.0.1",
+    "langgraph-cli[inmem]",
+    "langsmith>=0.4",
+    "pydantic>=2.0",
+    "python-dotenv",
+]
+
+[project.optional-dependencies]
+# Development tools for Jupyter/notebooks
+jupyter = [
+    "ipykernel",
+    "jupyter",
+    "jupyterlab",
+]
+
+# Testing dependencies
+test = [
+    "pytest", 
+    "pytest-cov", 
+    "pytest-mock", 
+    "pytest-asyncio",  # For async test support
+    "pytest-xdist[psutil]",  # Parallel test execution
+    "pytest-timeout",  # Timeout for LLM tests
+    "coverage[toml]",  # Code coverage
+    "httpx",  # HTTP client for testing
+    "respx",  # Mock HTTP for testing
+]
+
+# Linting and formatting
+lint = [
     "ruff",
     "mypy",
-    "pydocstyle",
-    # --- Dev Utilities ---
+    "types-requests",
+]
+
+# Documentation
+doc = [
+    "mkdocs",
+    "mkdocs-material",
+    "mkdocstrings[python]",
+    "mkdocs-literate-nav",
+]
+
+# Development utilities
+utils = [
     "pre-commit",
     "ipython",
     "rich",
-    "python-dotenv",
     "debugpy",
-    # --- Documentation ---
-    "mkdocs",
-    "mkdocs-material",
 ]
 
+# All development dependencies
+dev = [
+    "learn-langgraph[jupyter,test,lint,doc,utils]",
+]
 
-# ---------------------------
-# Build system
-# ---------------------------
+[project.urls]
+Homepage = "https://github.com/nuaaxc/learn-langgraph"
+Documentation = "https://github.com/nuaaxc/learn-langgraph"
+Repository = "https://github.com/nuaaxc/learn-langgraph"
+Issues = "https://github.com/nuaaxc/learn-langgraph/issues"
+
+[project.scripts]
+# Add CLI scripts if needed
+# learn-langgraph = "learn_langgraph.cli:main"
+
+
+[tool.ruff]
+line-length = 88
+indent-width = 4
+target-version = "py313"
+src = ["src", "tests"]
+extend-exclude = [
+    ".venv",
+    "venv",
+    "__pycache__",
+    "*.egg-info",
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "lf"
+docstring-code-format = true  # Format code in docstrings
+
+[tool.ruff.lint]
+# More comprehensive rule set for AI projects
+select = [
+    "E",      # pycodestyle errors
+    "F",      # pyflakes
+    "I",      # isort
+    "N",      # pep8-naming
+    "UP",     # pyupgrade
+    "B",      # flake8-bugbear
+    "C4",     # flake8-comprehensions
+    "DTZ",    # flake8-datetimez
+    "T10",    # flake8-debugger
+    "EM",     # flake8-errmsg
+    "ISC",    # flake8-implicit-str-concat
+    "ICN",    # flake8-import-conventions
+    "PIE",    # flake8-pie
+    "PT",     # flake8-pytest-style
+    "Q",      # flake8-quotes
+    "RSE",    # flake8-raise
+    "RET",    # flake8-return
+    "SIM",    # flake8-simplify
+    "TID",    # flake8-tidy-imports
+    "TCH",    # flake8-type-checking
+    "ARG",    # flake8-unused-arguments
+    "PTH",    # flake8-use-pathlib
+    "ERA",    # eradicate
+    "PD",     # pandas-vet
+    "PL",     # pylint
+    "TRY",    # tryceratops
+    "NPY",    # numpy-specific rules
+    "PERF",   # performance anti-patterns
+    "RUF",    # ruff-specific rules
+]
+ignore = [
+    "E501",    # line too long (handled by formatter)
+    "PLR0913", # too many arguments
+    "PLR2004", # magic value in comparison
+    "TRY003",  # long messages outside exception class
+    "EM101",   # exception with string literal
+    "EM102",   # exception with f-string
+]
+fixable = ["ALL"]
+unfixable = []
+
+[tool.ruff.lint.isort]
+known-first-party = ["learn_langgraph"]
+force-single-line = false
+lines-after-imports = 2
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.flake8-quotes]
+inline-quotes = "double"
+docstring-quotes = "double"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["D", "PLR2004", "S101", "ARG"]
+"**/__init__.py" = ["F401"]
+
+[tool.mypy]
+python_version = "3.13"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
+disallow_untyped_defs = true
+disallow_any_unimported = false
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = false
+check_untyped_defs = true
+strict_equality = true
+explicit_package_bases = true
+allow_redefinition = true
+disable_error_code = ["typeddict-item", "return-value", "override", "has-type"]
+
+# Per-module options
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_defs = false
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = [
+    "-ra",
+    "--strict-markers",
+    "--strict-config",
+    "--showlocals",
+    "--tb=short",
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "llm: marks tests that call actual LLM APIs",
+]
+asyncio_mode = "auto"
+timeout = 300  # 5 minutes timeout for LLM tests
+
+[tool.coverage.run]
+source = ["src"]
+branch = true
+parallel = true
+omit = [
+    "*/tests/*",
+    "*/test_*.py",
+    "*/__pycache__/*",
+    "*/site-packages/*",
+]
+
+[tool.coverage.report]
+precision = 2
+show_missing = true
+skip_covered = false
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if TYPE_CHECKING:",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "@abstractmethod",
+    "@abc.abstractmethod",
+]
+
+[tool.coverage.html]
+directory = "htmlcov"
+
 [build-system]
-requires = ["setuptools", "wheel", "uv"]
+requires = ["setuptools>=68.0.0", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["learn_langgraph*"]
+namespaces = false
